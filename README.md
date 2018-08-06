@@ -9,3 +9,6 @@ servers and my personal day to day use.
 
 [castle]: https://github.com/technicalpickles/homesick
 
+Quick install:
+
+    $ bash <(curl -L https://git.io/fNMTH)
