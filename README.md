@@ -7,30 +7,38 @@ servers and my personal day to day use.
 
 * Focus on web development
 * No *git submodules*
-* Minimal dependencies, plugins and startup time
+* Minimal dependencies and plugins
+* Fast startup time (~ 2 min on the 1st bootstrap, ~70ms startuptime after)
+* Easy and customizible bootstrap, make yourself at home with 1 command
 
-Quick install:
+Quick install, with [homeshick][] and [my dotfiles][warwick]:
 
     $ bash <(curl -L https://git.io/fNMTH)
 
-## Overall config
+You can [customize][] my bootstrap script to include your own dotfiles, although
+you will be able to edit the [castles][castle] which will be cloned during the installation.
 
-* Light theme through `papercolor`, there is `twilight` for dark backgrounds
-* The overall behavior tries to be as compatible as possible with
-  Sublime/TextMate-lie editors as possible - always respecting VIM first
-* If `ag` (silver searcher) is installed, use it for `vimgrep` and `ctrlp`
+[customize]: https://gist.github.com/augustohp/0b0f96249e399d4ec731830280fbe776
+[warwick]: https://github.com/augustohp/warwick
+[homeshick]: https://github.com/andsens/homeshick
+
+<a href="https://www.github.com/nightsense/snow">
+<img alt="snow theme" src="https://github.com/nightsense/snow/raw/master/images/screenshot-light.png" width='420' />
+</a>
 
 ## Notable plugins
 
-I use [tpope/pathogen][1] to load a bunch of plugins that require multiple files
-to work:
+I use [vim-plug][1] to load plugins:
 
-* `CTRL+P` provides a recursive fuzzy search on the project directory
-* `gf-markdown` is a GitHub flavoured markdown syntax (which takes precedence
-  over regular `.md` files)
-* `NerdTree` is a better file explorer with `CTRL-N` and `NerdTreeTabs` keeps
-  the buffer for NerdTree consistent across tabs
-* `tabline` makes tab numbers to start on 1
+* [CTRL+P][2] for fuzzy search on the project directory
+* [NerdTree][3] as file browser as [a true panel][4]
+* [Syntastic][5] for linting
+
+[1]: https://github.com/junegunn/vim-plug
+[2]: https://github.com/kien/ctrlp.vim
+[3]: https://github.com/scrooloose/nerdtree
+[4]: https://github.com/jistr/vim-nerdtree-tabs
+[5]: https://github.com/vim-syntastic/syntastic
 
 ## Mappings
 
@@ -65,4 +73,3 @@ My **leader** is mapped to `\`.
 * `<leader>l`: Lints current file
 * `<leader>d`: Executes `npm test` for current test file
 
-[1]: https://github.com/tpope/vim-pathogen
