@@ -4,7 +4,7 @@
 
 set background=light
 set t_Co=256
-colorscheme papercolor
+colorscheme snow
 
 " Plugins {{{
 " https://github.com/junegunn/vim-plug
@@ -55,8 +55,6 @@ set number          " show line numbers (gutter-like)
 set backspace=indent,eol,start
 set tags=./.ctags,./tags,tags,~/.common_ctags
 " }}}
-
-" Color scheme options
 
 " The silver searcher
 if executable('ag')
