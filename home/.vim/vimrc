@@ -2,9 +2,9 @@
 "
 " @author Augusto Pascutti
 
-set background=light
+set background=dark
 set t_Co=256
-colorscheme snow
+colorscheme twilight256
 
 " Plugins {{{
 " https://github.com/junegunn/vim-plug
