@@ -26,6 +26,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'pearofducks/ansible-vim', { 'for': 'yaml' }
+Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
 
 call plug#end()
 "}}}
