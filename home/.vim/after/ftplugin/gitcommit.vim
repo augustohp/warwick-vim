@@ -4,6 +4,7 @@
 
 set textwidth=72
 set spell spelllang=en_us
+set spell spelllang+=pt_br
 
 " Use Git configurations
 source $HOME/.vim/after/ftplugin/git.vim
