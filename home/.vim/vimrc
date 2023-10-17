@@ -22,11 +22,16 @@ Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'editorconfig/editorconfig-vim'
 
-" Syntax or ecosystem plugins
+" Syntax or ecosystem plugins (loaded on demand)
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'pearofducks/ansible-vim', { 'for': 'yaml' }
 Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
+
+" nvim plugins
+if has("nvim")
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+endif
 
 call plug#end()
 "}}}
