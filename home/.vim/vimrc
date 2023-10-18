@@ -15,6 +15,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 call plug#begin('~/.vim/bundle')
 
+" Essentials
 Plug 'kien/ctrlp.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-sensible'
@@ -27,6 +28,12 @@ Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'pearofducks/ansible-vim', { 'for': 'yaml' }
 Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
+
+" Vanity
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme="minimalist"
+Plug 'ryanoasis/vim-devicons'
 
 " nvim plugins
 if has("nvim")
