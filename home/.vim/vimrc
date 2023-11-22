@@ -2,10 +2,6 @@
 "
 " @author Augusto Pascutti
 
-set background=dark
-set t_Co=256
-colorscheme twilight256
-
 " Plugins {{{
 " https://github.com/junegunn/vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -19,6 +15,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'kien/ctrlp.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'editorconfig/editorconfig-vim'
@@ -37,10 +34,30 @@ Plug 'ryanoasis/vim-devicons'
 
 " nvim plugins
 if has("nvim")
+    " Language Server Protocol
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-vsnip'
+    Plug 'hrsh7th/vim-vsnip'
+    Plug 'folke/trouble.nvim'
+    Plug 'onsails/lspkind.nvim'
+    Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
+    " Better syntax highlight
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    " Colorscheme
+    Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 endif
 
 call plug#end()
+"}}}
+
+" Visual Configuration {{{
+set background=dark
+set t_Co=256
+set encoding=UTF-8
+colorscheme twilight
 "}}}
 
 " Global Maps {{{
@@ -49,6 +66,7 @@ nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:copen<CR>
 " }}}
 
 " My Preferences {{{
+set autoindent
 set foldmethod=marker
 set foldlevel=1     " fold level when opening a file
 set incsearch
