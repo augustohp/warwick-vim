@@ -7,6 +7,10 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 source ~/.vim/vimrc
 
+lua <<EOF
+  vim.g.editorconfig = true
+EOF
+
 " ------------------------------------------------------------------------------------------------------
 "  Vanity
 
@@ -44,6 +48,9 @@ lua <<EOF
   local lspconfig = require('lspconfig')
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
   local handlers = {
+    function (server_name) -- default handler
+      require("lspconfig")[server_name].setup {}
+    end,
     ["intelephense"] = function ()
       lspconfig.intelephense.setup {
           capabilities = capabilities,
@@ -58,7 +65,7 @@ lua <<EOF
     ensure_installed = {
       "awk_ls", "bashls", "denols", "dockerls", "docker_compose_language_service",  
       "dotls", "eslint", "gopls", "html", "tsserver", "lua_ls", "marksman",
-      "intelephense", "psalm", "pyright", "sqls", "terraformls", "vimls",
+      "intelephense", "psalm", "pyright", "sqlls", "terraformls", "vimls",
       "vuels"
     },
     automatic_installation = true
@@ -86,7 +93,7 @@ lua <<EOF
 
   -- Global mappings.
   -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-  vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+  vim.keymap.set('n', '<space>d', vim.diagnostic.open_float)
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
   vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
@@ -124,17 +131,22 @@ lua <<EOF
 
   -- Auto-complete setup
   cmp.setup({
+    performance = {
+      debounce = 150,
+    },
     snippet = { -- required
       expand = function(args)
         vim.fn["vsnip#anonymous"](args.body)
       end,
     },
+    
     view = {
+      -- entries = "custom",
       -- Most ranked completion near cursor (top-down or bottom-top depending on the popup)
       entries = { name = 'custom', selection_order = 'near_cursor' }
     },
     window = {
-      -- completion = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered(),
       -- documentation = cmp.config.window.bordered(),
     },
     formatting = {
@@ -217,7 +229,7 @@ require'nvim-treesitter.configs'.setup {
   ignore_install = {},
 
   indent = {
-    enable = true
+    enable = false
   },
 
   highlight = {
