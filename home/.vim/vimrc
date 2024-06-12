@@ -68,8 +68,9 @@ nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:copen<CR>
 
 " My Preferences {{{
 set autoindent
+set nowrap
 set foldmethod=marker
-set foldlevel=1     " fold level when opening a file
+set foldlevel=99    " fold level when opening a file
 set incsearch
 set hlsearch
 set exrc
