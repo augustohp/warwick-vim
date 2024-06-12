@@ -37,7 +37,6 @@ mason_lspconfig.setup {
     "intelephense",
     "lua_ls",
     "marksman",
-    "psalm",
     "pyright",
     "sqlls",
     "terraformls",
