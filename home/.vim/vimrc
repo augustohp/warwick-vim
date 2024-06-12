@@ -12,7 +12,6 @@ endif
 call plug#begin('~/.vim/bundle')
 
 " Essentials
-Plug 'kien/ctrlp.vim'
 Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
@@ -41,6 +40,7 @@ if has("nvim")
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
+    Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
     Plug 'folke/trouble.nvim'
     Plug 'onsails/lspkind.nvim'
     Plug 'williamboman/mason.nvim'
@@ -49,6 +49,9 @@ if has("nvim")
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     " Colorscheme
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+    " UX
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
 endif
 
 call plug#end()

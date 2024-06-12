@@ -9,9 +9,8 @@ source ~/.vim/vimrc
 colorscheme catppuccin-mocha
 
 lua <<EOF
-  vim.g.editorconfig = true
-
   require("tree-sitter")
   require("lsp")
   require("nvim-cmp")
+  require("personalization")
 EOF
