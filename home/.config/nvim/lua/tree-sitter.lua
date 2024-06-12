@@ -44,7 +44,7 @@ require'nvim-treesitter.configs'.setup {
   ignore_install = {},
 
   indent = {
-    enable = false
+    enable = true
   },
 
   highlight = {
