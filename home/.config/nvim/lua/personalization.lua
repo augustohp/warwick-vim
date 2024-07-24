@@ -3,7 +3,7 @@
 
 
 vim.g.editorconfig = true
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "catppuccin-macchiato"
 
 -- Telescope (Fuzzy finder)
 local tc = require("telescope.builtin")

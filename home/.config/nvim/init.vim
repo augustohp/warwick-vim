@@ -6,7 +6,6 @@
 set runtimepath^=~/.vim runtimepath+=~/.vim/after,$XDG_CONFIG_HOME/nvim
 let &packpath = &runtimepath
 source ~/.vim/vimrc
-colorscheme catppuccin-mocha
 
 lua <<EOF
   require("tree-sitter")
