@@ -29,7 +29,8 @@ Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
 " Vanity
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme="minimalist"
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+let g:airline_theme="catppuccin_mocha"
 Plug 'ryanoasis/vim-devicons'
 
 " nvim plugins
@@ -58,10 +59,11 @@ call plug#end()
 "}}}
 
 " Visual Configuration {{{
+set termguicolors
 set background=dark
 set t_Co=256
 set encoding=UTF-8
-colorscheme twilight
+colorscheme catppuccin_mocha
 "}}}
 
 " Global Maps {{{
