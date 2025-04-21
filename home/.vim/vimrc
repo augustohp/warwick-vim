@@ -86,7 +86,7 @@ retab               " converts existing tabs
 set ruler           " shows ruler
 set laststatus=2   " lines of status
 set nosmartindent   "
-set visualbell      " visual bell
+set novisualbell      " visual bell
 set sw=4            " shift width (>)
 set wildmode=longest,list:full
 set guioptions=aAce
