@@ -24,7 +24,6 @@ require'nvim-treesitter.configs'.setup {
       "jq",
       "jsdoc",
       "json",
-      "latex",
       "lua",
       "make",
       "markdown",
