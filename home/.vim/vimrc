@@ -61,6 +61,7 @@ Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'pearofducks/ansible-vim', { 'for': 'yaml' }
 Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
+Plug 'github/copilot.vim'
 
 " Vanity
 Plug 'vim-airline/vim-airline'
