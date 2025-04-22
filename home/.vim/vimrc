@@ -23,11 +23,6 @@ Plug 'tpope/vim-sleuth'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'editorconfig/editorconfig-vim'
 
-" Fuzzy finder
-Plug 'ctrlpvim/ctrlp.vim'
-"let g:ctrlp_show_hidden=1
-"let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
-
 " Project drawer (Fern)
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/nerdfont.vim'
@@ -90,6 +85,11 @@ if has("nvim")
     " UX
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+else
+  " Fuzzy finder (VIM Only so it doesn't conflict with Telescope
+  Plug 'ctrlpvim/ctrlp.vim'
+  let g:ctrlp_show_hidden=1
+  let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
 endif
 
 call plug#end()
