@@ -18,9 +18,36 @@ Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
-Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'editorconfig/editorconfig-vim'
+
+" Project drawer (Fern)
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/vim-fern-renderer-nerdfont'
+Plug 'lambdalisue/vim-glyph-palette'
+Plug 'lambdalisue/vim-fern-git-status'
+let g:fern#renderer = "nerdfont"
+map <C-n> :Fern . -reveal=% -drawer<CR>
+function! s:init_fern() abort
+  " Define NERDTree like mappings
+  nmap <buffer> o <Plug>(fern-action-open:edit)
+  nmap <buffer> t <Plug>(fern-action-open:tabedit)
+  nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
+  nmap <buffer> i <Plug>(fern-action-open:split)
+  nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
+  nmap <buffer> s <Plug>(fern-action-open:vsplit)
+  nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
+  nmap <buffer> ma <Plug>(fern-action-new-path)
+  nmap <buffer> I <Plug>(fern-action-hidden-toggle)
+  nmap <buffer> q :<C-u>quit<CR>
+endfunction
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+  autocmd FileType fall-list call glyph_palette#apply()
+  autocmd FileType nerdtree,startify call glyph_palette#apply()
+augroup END
 
 " Syntax or ecosystem plugins (loaded on demand)
 Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
@@ -69,7 +96,6 @@ colorscheme catppuccin_mocha
 "}}}
 
 " Global Maps {{{
-map <C-n> :NERDTreeTabsToggle<CR>
 nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:copen<CR>
 " }}}
 
