@@ -13,7 +13,11 @@ endif
 
 let g:plug_url_format = 'git@github.com:%s.git'
 
-call plug#begin('~/.vim/bundle')
+if (has("nvim"))
+  call plug#begin('~/.vim/bundle_nvim')
+else
+  call plug#begin('~/.vim/bundle')
+endif
 
 " Essentials
 Plug 'vim-syntastic/syntastic'
@@ -60,13 +64,13 @@ Plug 'github/copilot.vim'
 
 " Vanity
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-let g:airline_theme="catppuccin_mocha"
 Plug 'ryanoasis/vim-devicons'
 
-" nvim plugins
+" nvim/vim exclusive plugins
 if has("nvim")
+    " UX
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
     " Language Server Protocol
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/nvim-cmp'
@@ -80,27 +84,34 @@ if has("nvim")
     Plug 'williamboman/mason-lspconfig.nvim'
     " Better syntax highlight
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    " Colorscheme
+    " Vanity
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-    " UX
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
-else
+    let g:airline_theme = 'catppuccin'
+else " Only for VIM
   " Fuzzy finder (VIM Only so it doesn't conflict with Telescope
   Plug 'ctrlpvim/ctrlp.vim'
   let g:ctrlp_show_hidden=1
   let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
+  set guioptions=aAce
+  " Vanity
+  Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+  Plug 'vim-airline/vim-airline-themes'
+  
+  let g:airline_theme="catppuccin_mocha"
 endif
 
 call plug#end()
 "}}}
+
+if !has("nvim")
+  colorscheme catppuccin_mocha
+endif
 
 " Visual Configuration {{{
 set termguicolors
 set background=dark
 set t_Co=256
 set encoding=UTF-8
-colorscheme catppuccin_mocha
 "}}}
 
 " Global Maps {{{
@@ -125,7 +136,6 @@ set nosmartindent   "
 set novisualbell      " visual bell
 set sw=4            " shift width (>)
 set wildmode=longest,list:full
-set guioptions=aAce
 set cursorline      " highlugh current line
 set number          " show line numbers (gutter-like)
 set backspace=indent,eol,start
