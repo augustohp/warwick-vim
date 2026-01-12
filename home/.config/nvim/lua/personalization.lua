@@ -1,7 +1,7 @@
 -- personalization.lua
 -- Customizing experience on neovim
 
-
+vim.g["fern#default_hidden"] = 1
 vim.g.editorconfig = true
 require("catppuccin").setup({
   flavor = "mocha",
