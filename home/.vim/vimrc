@@ -160,7 +160,15 @@ set encoding=UTF-8
 "}}}
 
 " Global Maps {{{
-nnoremap <leader>s :grep! "\b<C-R><C-W>\b"<CR>:copen<CR>
+" -----------------------------------------------------------------------------
+
+" vimgrep word under cursor
+nnoremap <leader>s :grep! "<C-R><C-W>"<CR>:copen<CR>
+
+" .vimrc reload
+nnoremap <leader>vr :source $MYVIMRC<CR>
+" .vimrc edit
+nnoremap <leader>ve :tabedit $MYVIMRC<CR>
 " }}}
 
 " My Preferences {{{
