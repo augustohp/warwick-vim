@@ -7,20 +7,23 @@ if exists("b:did_warwick_fern_ftplugin")
 endif
 let b:did_warwick_fern_ftplugin = 1
 
-" Smart open, expand, and collapse behavior
-nmap <buffer><expr>
-      \ <Plug>(fern-my-open-expand-collapse)
+" NERDTree-style activation: open files and toggle directories in place
+nmap <buffer><silent><expr>
+      \ <Plug>(fern-my-activate)
       \ fern#smart#leaf(
-      \   "\<Plug>(fern-action-open:select)",
-      \   "\<Plug>(fern-action-expand)",
+      \   "\<Plug>(fern-action-open)",
+      \   "\<Plug>(fern-action-expand:stay)",
       \   "\<Plug>(fern-action-collapse)",
       \ )
-nmap <buffer><nowait> l <Plug>(fern-my-open-expand-collapse)
-nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+nmap <buffer><silent> o <Plug>(fern-my-activate)
+nmap <buffer><silent> <CR> <Plug>(fern-my-activate)
+
+" Directional tree navigation
+nmap <buffer><nowait> l <Plug>(fern-action-open-or-expand)
+nmap <buffer><nowait> h <Plug>(fern-action-collapse)
 
 " NERDTree-like mappings
-nmap <buffer> o <Plug>(fern-action-open:edit)
-nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
+nmap <buffer> go <Plug>(fern-action-open)<C-w>p
 nmap <buffer> t <Plug>(fern-action-open:tabedit)
 nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
 nmap <buffer> i <Plug>(fern-action-open:split)
@@ -37,21 +40,3 @@ nmap <buffer> cd <Plug>(fern-action-cd)
 nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
 nmap <buffer> I <Plug>(fern-action-hidden-toggle)
 nmap <buffer> q :<C-u>quit<CR>
-
-" Preview files while moving through a drawer
-nmap <buffer><expr>
-      \ <Plug>(fern-my-preview-or-nop)
-      \ fern#smart#leaf(
-      \   "\<Plug>(fern-action-open:edit)\<C-w>p",
-      \   "",
-      \ )
-nmap <buffer><expr> j
-      \ fern#smart#drawer(
-      \   "j\<Plug>(fern-my-preview-or-nop)",
-      \   "j",
-      \ )
-nmap <buffer><expr> k
-      \ fern#smart#drawer(
-      \   "k\<Plug>(fern-my-preview-or-nop)",
-      \   "k",
-      \ )
