@@ -24,7 +24,6 @@ Plug 'vim-syntastic/syntastic'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
-Plug 'jistr/vim-nerdtree-tabs'
 Plug 'editorconfig/editorconfig-vim'
 
 " Project drawer (Fern)
