@@ -1,15 +1,11 @@
-" home/.vim/after/ftplugin/vim.vim
+" home/.vim/after/ftplugin/ruby.vim
 "
 " @author Augusto Pascutti <augusto.hp@gmail.com>
 
-set showmatch
-set expandtab
-set tabstop=2
-set shiftwidth=2
-retab
+setlocal showmatch
+setlocal expandtab
+setlocal tabstop=2
+setlocal shiftwidth=2
 
-nnoremap <leader>l :!ruby -c <C-R>% <CR>
-nnoremap <leader>d :!bundle exec rspec <C-R>% <CR>
-
-" Removes trailing white spaces
-autocmd BufWritePre * :%s/\s\+$//e
+nnoremap <buffer> <leader>l :!ruby -c <C-R>% <CR>
+nnoremap <buffer> <leader>d :!bundle exec rspec <C-R>% <CR>

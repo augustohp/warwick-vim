@@ -3,10 +3,9 @@
 " @author Augusto Pascutti <augusto.hp@gmail.com>
 "
 
-set noexpandtab
-set tabstop=2
-set shiftwidth=2
-retab
+setlocal noexpandtab
+setlocal tabstop=2
+setlocal shiftwidth=2
 
-nnoremap <leader>l :!node --check <C-R>% <CR>
-nnoremap <leader>d :Dispatch npm test <CR>
+nnoremap <buffer> <leader>l :!node --check <C-R>% <CR>
+nnoremap <buffer> <leader>d :!npm test -- <C-R>%<CR>

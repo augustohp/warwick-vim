@@ -2,12 +2,8 @@
 "
 " @author Augusto Pascutti <augusto.hp@gmail.com>
 
-set noexpandtab
-set tabstop=4
+setlocal noexpandtab
+setlocal tabstop=4
 
 " Checkstyle of current buffer
-nnoremap <leader>c :!gofmt -d -s <C-R>% <CR>
-
-"
-" Removes trailing white spaces
-autocmd BufWritePre * :%s/\s\+$//e
+nnoremap <buffer> <leader>c :!gofmt -d -s <C-R>% <CR>
