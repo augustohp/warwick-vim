@@ -2,47 +2,31 @@
 -- Language Server configuration
 
 require("mason").setup()
-local mason_lspconfig = require'mason-lspconfig'
-local lspconfig = require('lspconfig')
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+vim.lsp.config("*", {
+  capabilities = require("cmp_nvim_lsp").default_capabilities(),
+})
+require("mason-lspconfig").setup({
+  ensure_installed = {},
+  automatic_enable = true,
+})
 
-local handlers = {
-  -- default handler
-  function (server_name)
-    require("lspconfig")[server_name].setup {}
-  end,
-  -- specific handlers
-  ["intelephense"] = function ()
-    lspconfig.intelephense.setup {
-      capabilities = capabilities,
-      init_options = {
-        licenseKey = "00JEYSEM842Z7N9"
-      },
-    }
-  end
-}
-
-mason_lspconfig.setup {
-  handlers = handlers,
-  ensure_installed = {
-    "awk_ls",
-    "bashls",
-    "denols",
-    "docker_compose_language_service",
-    "dockerls",
-    "dotls",
-    "eslint",
-    "gopls",
-    "html",
-    "intelephense",
-    "lua_ls",
-    "marksman",
-    "sqlls",
-    "terraformls",
-    "vimls",
-    "vuels",
-  },
-  automatic_installation = true
+local packages = {
+  "awk-language-server",
+  "bash-language-server",
+  "deno",
+  "docker-compose-language-service",
+  "dockerfile-language-server",
+  "dot-language-server",
+  "eslint-lsp",
+  "gopls",
+  "html-lsp",
+  "intelephense",
+  "lua-language-server",
+  "marksman",
+  "sqls",
+  "terraform-ls",
+  "vim-language-server",
+  "vue-language-server",
 }
 
 -- How issues on the code is displayed
@@ -59,8 +43,50 @@ vim.diagnostic.config({
   severity_sort = false,
 })
 
-local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("warwick-lsp", { clear = true }),
+  callback = function(event)
+    local opts = { buffer = event.buf }
+
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "[d", function()
+      vim.diagnostic.jump({ count = -1, float = true })
+    end, opts)
+    vim.keymap.set("n", "]d", function()
+      vim.diagnostic.jump({ count = 1, float = true })
+    end, opts)
+    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
+    vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>f", function()
+      vim.lsp.buf.format({ async = true })
+    end, opts)
+  end,
+})
+
+return {
+  install = function()
+    local registry = require("mason-registry")
+    registry.refresh(function(success, error_message)
+      if not success then
+        vim.notify("Could not refresh Mason registry: " .. error_message, vim.log.levels.ERROR)
+        return
+      end
+
+      for _, name in ipairs(packages) do
+        local found, package = pcall(registry.get_package, name)
+        if not found then
+          vim.notify("Unknown Mason package: " .. name, vim.log.levels.ERROR)
+        elseif not package:is_installed() and not package:is_installing() then
+          package:install()
+        end
+      end
+    end)
+  end,
+}

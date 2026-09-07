@@ -5,94 +5,117 @@
 " Plugins {{{
 " https://github.com/junegunn/vim-plug
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if !exists('g:warwick_config')
+  let g:warwick_config = resolve(expand('<sfile>:p'))
 endif
 
-let g:plug_url_format = 'git@github.com:%s.git'
-
-if (has("nvim"))
-  call plug#begin('~/.vim/bundle_nvim')
+let s:vim_plug = expand('~/.vim/autoload/plug.vim')
+let s:has_vim_plug = filereadable(s:vim_plug)
+if s:has_vim_plug
+  if has('nvim')
+    call plug#begin('~/.vim/bundle_nvim')
+  else
+    call plug#begin('~/.vim/bundle')
+  endif
 else
-  call plug#begin('~/.vim/bundle')
+  command! -nargs=+ Plug
 endif
 
 " Essentials
-Plug 'vim-syntastic/syntastic'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-sleuth'
-Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-fugitive', { 'on': ['Git', 'G', 'Gdiffsplit', 'Gread', 'Gwrite', 'Ggrep'] }
+Plug 'github/copilot.vim'
+let g:copilot_no_tab_map = v:true
+imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
 
 " Project drawer (Fern)
-Plug 'lambdalisue/fern.vim'
-Plug 'lambdalisue/nerdfont.vim'
-Plug 'lambdalisue/vim-fern-renderer-nerdfont'
-Plug 'lambdalisue/vim-glyph-palette'
-Plug 'lambdalisue/vim-fern-git-status'
-map <C-n> :Fern . -reveal=% -drawer -toggle -width=35<CR>
-let g:fern#renderer = "nerdfont"
-
-augroup fern-warwick
-  autocmd! *
-  " Icons on file explorer
-  autocmd FileType fern call glyph_palette#apply()
-  autocmd FileType fall-list call glyph_palette#apply()
-  autocmd FileType nerdtree,startify call glyph_palette#apply()
-augroup END
+Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
+nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=35<CR>
+let g:fern#default_hidden = 1
 set hidden
-
-" Syntax or ecosystem plugins (loaded on demand)
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-Plug 'pearofducks/ansible-vim', { 'for': 'yaml' }
-Plug 'itspriddle/vim-shellcheck', { 'for': 'sh' }
-Plug 'github/copilot.vim'
-
-" Vanity
-Plug 'vim-airline/vim-airline'
-Plug 'ryanoasis/vim-devicons'
 
 " nvim/vim exclusive plugins
 if has("nvim")
-    " UX
+    " Fuzzy finder
     Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
     " Language Server Protocol
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-vsnip'
     Plug 'hrsh7th/vim-vsnip'
-    Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
-    Plug 'folke/trouble.nvim'
     Plug 'onsails/lspkind.nvim'
-    Plug 'williamboman/mason.nvim'
-    Plug 'williamboman/mason-lspconfig.nvim'
-    " Better syntax highlight
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'mason-org/mason.nvim'
+    Plug 'mason-org/mason-lspconfig.nvim'
+    " Syntax highlighting
+    Plug 'nvim-treesitter/nvim-treesitter', { 'branch': 'master' }
     " Vanity
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-    let g:airline_theme = 'catppuccin'
 else " Only for VIM
-  " Fuzzy finder (VIM Only so it doesn't conflict with Telescope
-  Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'ctrlpvim/ctrlp.vim', { 'on': ['CtrlP', 'CtrlPBuffer'] }
+  nnoremap <C-p> :CtrlP<CR>
+  nnoremap <leader>gb :CtrlPBuffer<CR>
   let g:ctrlp_show_hidden=1
   let g:ctrlp_custom_ignore='\v[\/]\.(git|hg|svn)$'
   set guioptions=aAce
   " Vanity
   Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-  Plug 'vim-airline/vim-airline-themes'
-  
-  let g:airline_theme="catppuccin_mocha"
 endif
 
-call plug#end()
+if s:has_vim_plug
+  call plug#end()
+else
+  delcommand Plug
+endif
+
+function! s:warwick_missing_plugins() abort
+  if !s:has_vim_plug
+    return ['vim-plug']
+  endif
+  return filter(copy(values(g:plugs)), '!isdirectory(v:val.dir)')
+endfunction
+
+function! s:warwick_install() abort
+  if !filereadable(s:vim_plug)
+    if !executable('curl')
+      echoerr 'WarwickInstall requires curl to install vim-plug.'
+      return
+    endif
+    call mkdir(fnamemodify(s:vim_plug, ':h'), 'p')
+    call system('curl -fsSL -o ' . shellescape(s:vim_plug)
+          \ . ' https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim')
+    if v:shell_error
+      echoerr 'Could not install vim-plug. Check the network and try again.'
+      return
+    endif
+    call timer_start(0, { -> execute('source ' . fnameescape(g:warwick_config)
+          \ . ' | WarwickInstall') })
+    return
+  endif
+  PlugInstall --sync
+  if has('nvim')
+    lua require("tree-sitter").install()
+    lua require("lsp").install()
+    echom 'Plugins and parsers installed. Mason is installing tools; restart after it finishes.'
+  else
+    echom 'Warwick installed. Restart Vim to load the new configuration.'
+  endif
+endfunction
+
+command! WarwickInstall call s:warwick_install()
+
+augroup warwick-bootstrap
+  autocmd!
+  autocmd VimEnter * if !empty(<SID>warwick_missing_plugins()) |
+        \ echohl WarningMsg |
+        \ echom 'Warwick is ready. Run :WarwickInstall to install missing plugins and tools.' |
+        \ echohl None |
+        \ endif
+augroup END
 "}}}
 
-if !has("nvim")
+if !has("nvim") && !empty(globpath(&runtimepath, 'colors/catppuccin_mocha.vim'))
   colorscheme catppuccin_mocha
 endif
 
@@ -110,9 +133,9 @@ set encoding=UTF-8
 nnoremap <leader>s :grep! "<C-R><C-W>"<CR>:copen<CR>
 
 " .vimrc reload
-nnoremap <leader>vr :source $MYVIMRC<CR>
+nnoremap <leader>vr :execute 'source ' . fnameescape(g:warwick_config)<CR>
 " .vimrc edit
-nnoremap <leader>ve :tabedit $MYVIMRC<CR>
+nnoremap <leader>ve :execute 'tabedit ' . fnameescape(g:warwick_config)<CR>
 " }}}
 
 " My Preferences {{{
@@ -122,13 +145,16 @@ set foldmethod=marker
 set foldlevel=99    " fold level when opening a file
 set incsearch
 set hlsearch
-set exrc
 set sm              " show matching brackets
 set ts=4            " tab stop
 set et              " expand tabs
-retab               " converts existing tabs
 set ruler           " shows ruler
-set laststatus=2   " lines of status
+set laststatus=2    " always show status
+set statusline=%f%m%r%h%w
+set statusline+=%=
+set statusline+=[%{&filetype}]
+set statusline+=[%l/%L:%c]
+set statusline+=[%p%%]
 set nosmartindent   "
 set novisualbell      " visual bell
 set sw=4            " shift width (>)
